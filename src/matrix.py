@@ -56,16 +56,19 @@ class Matrix:
         return Matrix(rescaled_rows)
 
     def matrix_multiplication(self, other_matrix):
+        result = [[sum(a*b for a,b in zip(row,col)) for col in zip(*other_matrix.rows)] for row in self.rows]
+        return Matrix(result)
+        """
         product = []
         for i in range(self.num_rows):
             product.append([])
             for j in range(other_matrix.num_cols):
                 product[i].append(0)
-        for i in range(self.num_rows):
-            for j in range(other_matrix.num_cols):
                 for k in range(self.num_cols):
                     product[i][j] += self.rows[i][k] * other_matrix.rows[k][j]
         return Matrix(product)
+        """
+
 
     def trim_matrix(self, i):
         trimmed_rows = self.copy().rows
@@ -148,15 +151,9 @@ class Matrix:
     def clear_below(self, i):
         cleared_rows = self.copy().rows
         nonzero = self.first_nonzero(i)
-        if len(cleared_rows) < len(cleared_rows[0]):
-            for j in range(i + 1, self.num_cols - 1):
-                scalar = -1 * cleared_rows[j][nonzero]/cleared_rows[i][nonzero]
-                cleared_matrix = Matrix(cleared_rows)
-                cleared_matrix = cleared_matrix.add_rows(j, i, scalar)
-                cleared_rows = cleared_matrix.rows
-        else:
-            for j in range(i + 1, self.num_cols):
-                scalar = -1 * cleared_rows[j][nonzero]/cleared_rows[i][nonzero]
+        if i + 1 < self.num_rows:
+            for j in range(i + 1, self.num_rows):
+                scalar = - 1 * cleared_rows[j][nonzero]/cleared_rows[i][nonzero]
                 cleared_matrix = Matrix(cleared_rows)
                 cleared_matrix = cleared_matrix.add_rows(j, i, scalar)
                 cleared_rows = cleared_matrix.rows
@@ -235,3 +232,57 @@ class Matrix:
                 elif copied_matrix.first_nonzero(i) > copied_matrix.first_nonzero(i + 1):
                     copied_matrix = copied_matrix.row_swap(i, i + 1)
         return copied_matrix
+
+    def identity_matrix(self):
+        Identity = []
+        for i in range(0, self.num_rows):
+            Identity.append([])
+            for j in range(0, self.num_cols):
+                Identity[i].append(0)
+        for i in range(0, self.num_rows):
+            Identity[i][i] += 1
+        return Matrix(Identity)
+    
+    def inter(self):
+        inted_matrix = self.rows
+        for i in range(0, self.num_rows):
+            for j in range(0, self.num_cols):
+                inted_matrix[i][j] = int(inted_matrix[i][j])
+        return Matrix(inted_matrix)
+    
+    def rescale_row(self, i, scalar):
+        rescaled_rows = self.copy().rows
+        for j in range(0, self.num_cols):
+            rescaled_rows[i][j] *= scalar
+        return Matrix(rescaled_rows)
+
+    def augment_matrix(self, right_matrix):
+        if self.num_rows != right_matrix.num_rows:
+            return False
+        copied_matrix = self.copy()
+        for i in range(0, self.num_rows):
+            copied_matrix.rows[i] = self.rows[i] + right_matrix.rows[i]
+        return copied_matrix
+
+    def un_augment_matrix(self, side):
+        copied_matrix = self.copy()
+        for i in range(0, self.num_rows):
+            for j in range(0, int(self.num_cols/2)):
+                if side == 1:
+                    del copied_matrix.rows[i][0]
+                if side == 2:
+                    del copied_matrix.rows[i][-1]
+        return copied_matrix
+
+    def inverse(self):
+        if self.num_cols != self.num_rows:
+            return False
+        Identity = self.identity_matrix()
+        copied_matrix = self.copy()
+        copied_matrix = copied_matrix.augment_matrix(Identity)
+        row_reduced = copied_matrix.rref()
+        if row_reduced.un_augment_matrix(2).rows != Identity.rows:
+            return False
+        answer = row_reduced.un_augment_matrix(1)
+        return answer
+
