@@ -1,13 +1,19 @@
 from matrix import Matrix
+
 class LinearRegression:
     def fit(self, points):
+
+        self.data = points
         rows = [[point[1]] for point in points]
         y_matrix = Matrix(rows)
+
         coefficient_rows = [[1, point[0]] for point in points]
         coefficient_matrix = Matrix(coefficient_rows)
+
         coefficient_transpose = coefficient_matrix.transpose()
         transpose_times_y = coefficient_transpose.matrix_multiplication(y_matrix)
         tranpose_times_coefficients = coefficient_transpose.matrix_multiplication(coefficient_matrix)
+
         inverse_matrix = tranpose_times_coefficients.inverse()
         a_b_matrix = inverse_matrix.matrix_multiplication(transpose_times_y)
         self.coefficients = []
@@ -16,7 +22,3 @@ class LinearRegression:
 
     def predict(self, x):
         return self.coefficients[1] * x + self.coefficients[0]
-a = LinearRegression()
-a.fit([[1, 0.2], [2, 0.25], [3, 0.5]])
-print(a.predict(2))
-print(a.coefficients)
