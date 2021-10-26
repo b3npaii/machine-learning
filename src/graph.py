@@ -16,6 +16,3 @@ class graph:
             if self.edges[i][0] == parent:
                 children.append(self.edges[i][1])
         return children
-a = graph([[1, 2], [1, 3], [1, 5], [0, 1,], [0, 9], [5, 8], [5, 2]])
-print(a.get_children(1))
-print(a.get_parents(2))
