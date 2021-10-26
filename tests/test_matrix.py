@@ -53,6 +53,7 @@ X.print()
 print("is:")
 X.rref().print()
 """
+"""
 print("The inverse of the matrix")
 A.print()
 print("is: ")
@@ -72,3 +73,6 @@ print("The inverse of the matrix")
 Three.print()
 print("is: ")
 Three.inverse().print()
+"""
+print(Ay.recursive_determinant_calc())
+print(Ay.determinant())

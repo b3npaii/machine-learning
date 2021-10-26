@@ -244,10 +244,10 @@ class Matrix:
         return Matrix(Identity)
     
     def inter(self):
-        inted_matrix = self.rows
+        inted_matrix = self.copy().rows
         for i in range(0, self.num_rows):
             for j in range(0, self.num_cols):
-                inted_matrix[i][j] = int(inted_matrix[i][j])
+                inted_matrix[i][j] = int(self.rows[i][j])
         return Matrix(inted_matrix)
     
     def rescale_row(self, i, scalar):
@@ -286,3 +286,30 @@ class Matrix:
         answer = row_reduced.un_augment_matrix(1)
         return answer
 
+    def determinant(self):
+        det = 1
+        row_reduced = self.rref().inter()
+        if row_reduced.rows != self.identity_matrix().rows:
+            det = 0
+            return det
+        copied_matrix = self.copy()
+        for j in range(0, copied_matrix.num_rows):
+            for i in range(0, copied_matrix.num_rows):
+                if copied_matrix.check_if_reduced_row(i) == True:                        continue
+                if copied_matrix.check_if_zero_row(i) == True:
+                    copied_matrix = copied_matrix.row_swap(i, self.num_cols)
+                    det *= -1
+                    continue
+                scalar_index = copied_matrix.first_nonzero(i)
+                scalar = copied_matrix.rows[i][scalar_index]
+                det *= scalar
+                copied_matrix = copied_matrix.first_nonzero_element_is_1(i)
+                copied_matrix = copied_matrix.clear_above(i)
+                copied_matrix = copied_matrix.clear_below(i)
+        for i in range(0, copied_matrix.num_rows - 1):
+            if copied_matrix.check_if_zero_row(i) == True or copied_matrix.check_if_zero_row(i + 1) == True:
+                continue
+            elif copied_matrix.first_nonzero(i) > copied_matrix.first_nonzero(i + 1):
+                copied_matrix = copied_matrix.row_swap(i, i + 1)
+                det *= -1
+        return det
