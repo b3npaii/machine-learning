@@ -74,5 +74,9 @@ Three.print()
 print("is: ")
 Three.inverse().print()
 """
-print(Ay.recursive_determinant_calc())
-print(Ay.determinant())
+if Ay.recursive_determinant_calc() != Ay.determinant():
+    print("broken 1")
+if A.recursive_determinant_calc() != A.determinant():
+    print("broken 2")
+if X.recursive_determinant_calc() != X.determinant():
+    print("broken 3")

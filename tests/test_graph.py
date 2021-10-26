@@ -12,4 +12,8 @@ if b.get_children(4) != [7, 5]:
     print("false 2")
 if b.get_parents(7) != [4, 5]:
     print("false 2.5")
-c = graph([[8.1, -3], [4, 7], []])
+c = graph([[8.1, -3], [4, 8.1], [-3, 4], [8.1, 4]])
+if c.get_children(8.1) != [-3, 4]:
+    print("false 3")
+if c.get_parents(4) != [-3, 8.1]:
+    print("false 3.5")
