@@ -2,6 +2,8 @@ import sys
 sys.path.append('src')
 
 from matrix import Matrix
+import math
+import random
 
 A = Matrix([[4, 3], [2, 1]])
 B = Matrix([[4, 3], [2, 1]])
@@ -80,3 +82,8 @@ if A.recursive_determinant_calc() != A.determinant():
     print("broken 2")
 if X.recursive_determinant_calc() != X.determinant():
     print("broken 3")
+
+L = Matrix([[3, 5, 7, 1.1, -4, 0, 7, 9, 2, 10], [7, 6, 5, 4, 8, 2, 4, 6, 7, 8], [9, 0, 0, 3, 6, 1, 8, 4.4, 7.9, 7], [1, 2, 3, 4, 5, 6, 7, 8, 9, 10], [10, 9, 8, 7, 6, 5, 4, 3, 2, 1], [1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 1.7, 1.8, 1.9, 1.2], [7, 8, 6, 5, 1, 2, 3, 9, 20, 7], [0, 0, -4, -1, -2, 7, 8, 6, 1.111, 9.34678], [1, 1, 1, 1, 1, 1, 1, 1, 1, 1], [0, 4, 5, 1, 2, 3, 7, 9, 8, 6]])
+print(L.num_cols)
+print(L.num_rows)
+print(L.determinant())
