@@ -49,5 +49,11 @@ class GeneralLinearRegression:
             self.coefficients.append(a_b_matrix.rows[i][0])
 
     def predict(self, inputs):
-        for i in range(0, len(inputs)):
-            
+        answer = 0
+        numbers = self.coefficients
+        for i in range(1, len(inputs)):
+            answer += inputs[i - 1] * numbers[i]
+        answer += self.coefficients[0]
+        return answer
+
+
