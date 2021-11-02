@@ -36,14 +36,18 @@ class GeneralLogisticRegression:
 
         self.data = points
         length = len(self.data[0])
-        rows = [[point[-1]] for point in points]
+        rows = [[math.log((1/(point[-1]) - 1), math.e)] for point in points]
         y_matrix = Matrix(rows)
 
         coefficient_rows = [[1] for point in points]
         for i in range(0, len(self.data)):
             for j in range(0, length - 1):
                 coefficient_rows[i].append(self.data[i][j])
-        
+
+        coefficient_rows = [[1] for point in points]
+        for i in range(0, len(self.data)):
+            for j in range(0, length - 1):
+                coefficient_rows[i].append(self.data[i][j])
         coefficient_matrix = Matrix(coefficient_rows)
 
         coefficient_transpose = coefficient_matrix.transpose()
@@ -63,3 +67,7 @@ class GeneralLogisticRegression:
             answer += inputs[i - 1] * numbers[i]
         answer += self.coefficients[0]
         return (1 / (1 + math.e ** answer))
+
+bruh7 = GeneralLogisticRegression()
+bruh7.fit([[9, 0, 0.1], [1, 0, 0.2], [2, 0, 0.4], [4, 0, 0.8], [0, 8, 0.6]])
+print(bruh7.coefficients)

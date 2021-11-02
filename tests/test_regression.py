@@ -31,16 +31,24 @@ e = LinearRegression()
 e.fit([[5, 0.6], [3, 0.4], [1, 0.2], [7, 0.8]])
 if 0.5 - e.predict(4) <= 0.001:
     print("True")
-f = LinearRegression()
+f = GeneralLinearRegression()
 f.fit([[69, 0.69], [420, 0.420], [69, 0.420]])
-if 0.58 - f.predict(4) <= 0.001:
+if 0.58 - f.predict([4]) <= 0.001:
     print("True")
 
-a = GeneralLinearRegression()
-a.fit([[0, 0, 1], [1, 0, 2], [2, 0, 4], [4, 0, 8], [0, 8, 6]])
-assert a.coefficients == [0.6000000000000005, 1.799999999999999, 0.675]
+g = GeneralLinearRegression()
+g.fit([[0, 0, 1], [1, 0, 2], [2, 0, 4], [4, 0, 8], [0, 8, 6]])
+assert g.coefficients == [0.6000000000000005, 1.799999999999999, 0.675]
 
 
-b = GeneralLinearRegression()
-b.fit([[0, 0, 1], [1, 0, 2], [2, 0, 4], [4, 0, 8], [0, 8, 6], [0, 6, 7]])
-assert b.coefficients == [0.8203124999999973, 1.7265625000000013, 0.7851562500000004]
+h = GeneralLinearRegression()
+h.fit([[0, 0, 1], [1, 0, 2], [2, 0, 4], [4, 0, 8], [0, 8, 6], [0, 6, 7]])
+assert h.coefficients == [0.8203124999999973, 1.7265625000000013, 0.7851562500000004]
+
+i = GeneralLogisticRegression()
+i.fit([[0.1, 0.2, 0.5], [0.9, 0.7, 0.9], [0.5, 0.6, 0.1]])
+assert i.coefficients == [-2.7465307216702812, -16.479184330021653, 21.972245773362218]
+
+j = GeneralLogisticRegression()
+j.fit([[9, 0, 0.1], [1, 0, 0.2], [2, 0, 0.4], [4, 0, 0.8], [0, 8, 0.6]])
+assert j.coefficients == [0.017376675350033788, 0.15832393650276563, -0.05285522293227472]
