@@ -1,6 +1,6 @@
 class Queue:
     def __init__(self, contents):
-        self.line = [contents]
+        self.line = contents
 
     def print(self):
         for i in self.line:

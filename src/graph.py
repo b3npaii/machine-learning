@@ -23,16 +23,15 @@ class graph:
         queue = Queue([start])
         seen = {}
         order = []
-        while queue != []:
+        while queue.line != []:
             dequeued = queue.dequeue()
-            print(dequeued)
             order.append(dequeued)
             seen[dequeued] = True
             children = self.get_children(dequeued)
+            if children is None:
+                continue
             for child in children:
-                if children == None:
-                    continue
-                elif child in seen:
+                if child in seen:
                     continue
                 queue.enqueue(child)
                 seen[child] = True
@@ -42,7 +41,7 @@ class graph:
         stack = Stack([start])
         seen = {}
         order = []
-        while len(stack) > 0:
+        while stack.data != []:
             destacked = stack.pop()
             order.append(destacked)
             seen[destacked] = True

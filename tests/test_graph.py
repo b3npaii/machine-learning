@@ -18,4 +18,4 @@ if c.get_children(8.1) != [-3, 4]:
     print("false 3")
 if c.get_parents(4) != [-3, 8.1]:
     print("false 3.5")
-print(a.breadth_first(1))
+print(a.depth_first(0))
