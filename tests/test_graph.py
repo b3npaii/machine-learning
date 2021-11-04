@@ -2,6 +2,7 @@ import sys
 sys.path.append('src')
 
 from graph import graph
+
 a = graph([[1, 2], [1, 3], [1, 5], [0, 1,], [0, 9], [5, 8], [5, 2]])
 if a.get_children(1) != [2, 3, 5]:
     print("false 1")
@@ -17,3 +18,4 @@ if c.get_children(8.1) != [-3, 4]:
     print("false 3")
 if c.get_parents(4) != [-3, 8.1]:
     print("false 3.5")
+print(a.breadth_first(1))
