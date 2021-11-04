@@ -18,4 +18,9 @@ if c.get_children(8.1) != [-3, 4]:
     print("false 3")
 if c.get_parents(4) != [-3, 8.1]:
     print("false 3.5")
-print(a.depth_first(0))
+d = graph([[4, 1], [4, 2], [4, 8], [4, 7], [1, 2], [1, 11], [11, 12], [12, 11], [7, 3], [7, 9]])
+
+if d.depth_first(4) != [4, 7, 9, 3, 8, 2, 1, 11, 12]:
+    print("dsf false")
+if d.breadth_first(4) != [4, 1, 2, 8, 7, 11, 3, 9, 12]:
+    print("bsf fail")

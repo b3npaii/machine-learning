@@ -45,7 +45,7 @@ class graph:
             destacked = stack.pop()
             order.append(destacked)
             seen[destacked] = True
-            children = self.get_children(dequeued)
+            children = self.get_children(destacked)
             for child in children:
                 if children == None:
                     continue

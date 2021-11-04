@@ -12,17 +12,26 @@ class Queue:
     def dequeue(self):
         return self.line.pop(0)
 
+
 class Stack:
-    def __init__(self, contents):
-        self.data = []
+
+    def __init__(self, contents=None):
+
+        if contents is None:
+            self.data = []
+
+        else:
+            self.data = contents
 
     def print(self):
-        reversed = self.data[::-1]
-        for i in reversed:
-            print(i)
 
-    def push(self, element):
-        self.data.append(element)
+        for item in self.data[::-1]:
+
+            print(item)
+
+    def push(self, item_to_push):
+
+        self.data.append(item_to_push)
 
     def pop(self):
-        self.data.pop(len(self.data) - 1)
+        return self.data.pop()
