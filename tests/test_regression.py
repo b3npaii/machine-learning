@@ -5,7 +5,9 @@ from linear_regressor import LinearRegression
 from logistic_regressor import LogisticRegression
 from linear_regressor  import GeneralLinearRegression
 from logistic_regressor import GeneralLogisticRegression
+from analysis import BetterSandwich
 
+"""
 print("For logistic Regression:")
 a = LogisticRegression()
 a.fit([[1, 0.2], [2, 0.25], [3, 0.5]])
@@ -52,3 +54,19 @@ assert i.coefficients == [-2.7465307216702812, -16.479184330021653, 21.972245773
 j = GeneralLogisticRegression()
 j.fit([[9, 0, 0.1], [1, 0, 0.2], [2, 0, 0.4], [4, 0, 0.8], [0, 8, 0.6]])
 assert j.coefficients == [0.017376675350033788, 0.15832393650276563, -0.05285522293227472]
+"""
+a = BetterSandwich()
+a.fit([[0, 0, 1], [1, 0, 2], [2, 0, 4], [4, 0, 8], [6, 0, 9], [0, 2, 2], [0, 4, 5], [0, 6, 7], [0, 8, 6], [2, 2, 1], [3, 4, 1]], [(1, 2)])
+print(a.predict([5, 5]))
+
+interaction_term_test_2 = BetterSandwich()
+interaction_term_test_2_data = [[0, 0, 0, 1], [1, 0, 5, 2], [2, 0, 1, 4], [4, 0, 0, 8], [6, 0, 0, 9], [0, 2, 0, 2], [0, 4, 0, 5], [0, 6, 0, 7], [0, 8, 0, 6], [2, 2, 0, 1], [3, 4, 0, 1], [5, 0, 1, 9], [5, 0, 5 ,3], [0, 3, 3, 1], [3, 3, 3, 1]]
+interaction_term_test_2.fit(interaction_term_test_2_data, [(1, 2), (2, 3)])
+
+for i in range(0, len(interaction_term_test_2_data)):
+    interaction_term_test_2_data[i].insert(-1, interaction_term_test_2_data[i][0] * interaction_term_test_2_data[i][1])
+    interaction_term_test_2_data[i].insert(-1, interaction_term_test_2_data[i][2] * interaction_term_test_2_data[i][1])
+
+check = BetterSandwich()
+check.fit(interaction_term_test_2_data)
+assert check.predict([5, 0, 2, 0, 0]) ==  interaction_term_test_2.predict([5, 0, 2])

@@ -31,7 +31,7 @@ class LinearRegression:
 
 
 class BetterSandwich:
-    def fit(self, points, interaction=None):
+    def fit(self, points, interaction = None):
 
         self.data = points
         self.coefficients = {}
@@ -79,7 +79,7 @@ class BetterSandwich:
     def predict(self, inputs):
         if self.coefficients is None:
             return "no data to fit"
-        if len(inputs) != len(self.coefficients) - (self.num_interaction + 1):
+        if len(inputs) != len(self.coefficients) - self.num_interaction - 1:
             return "broken"
         answer = 0
         for beta in self.coefficients:
@@ -94,8 +94,3 @@ class BetterSandwich:
                 answer += interaction_term
         answer += self.coefficients[0]
         return answer
-
-a = BetterSandwich()
-a.fit([[0, 0, 1], [1, 0, 2], [2, 0, 4], [4, 0, 8], [6, 0, 9], [0, 2, 2], [0, 4, 5], [0, 6, 7], [0, 8, 6], [2, 2, 1], [3, 4, 1]], [(1, 2)])
-print(a.coefficients)
-print(a.predict([5, 5]))
