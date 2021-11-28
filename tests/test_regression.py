@@ -6,6 +6,7 @@ from logistic_regressor import LogisticRegression
 from linear_regressor  import GeneralLinearRegression
 from logistic_regressor import GeneralLogisticRegression
 from analysis import BetterSandwich
+from gen_logistic import EvenBetterSandwich
 
 """
 print("For logistic Regression:")
@@ -70,3 +71,8 @@ for i in range(0, len(interaction_term_test_2_data)):
 check = BetterSandwich()
 check.fit(interaction_term_test_2_data)
 assert check.predict([5, 0, 2, 0, 0]) ==  interaction_term_test_2.predict([5, 0, 2])
+
+b = EvenBetterSandwich()
+b.fit([[0, 0, 1], [1, 0, 2], [2, 0, 4], [4, 0, 8], [6, 0, 9], [0, 2, 2], [0, 4, 5], [0, 6, 7], [0, 8, 6], [2, 2, 1], [3, 4, 1]], [(1, 2)], 0, 10)
+print(b.coefficients)
+print(b.predict([5, 5]))

@@ -2,7 +2,7 @@ from matrix import Matrix
 import math
 
 class EvenBetterSandwich:
-    def fit(self, points, max = 1, min = 0):
+    def fit(self, points, interaction = None, max = 1, min = 0):
 
         self.data = points
         self.coefficients = {}
@@ -11,8 +11,11 @@ class EvenBetterSandwich:
         self.min = min
 
         length = len(self.data[0])
-        y_matrix_rows = [[math.log(((upper_bound - point[-1]) / (point[-1] - lower_bound)))] for point in data]
-        y_matrix = Matrix(rows)
+        #y_matrix_rows = [[math.log(((max - point[-1]) / (point[-1] - min)))] for point in points]
+        y_matrix_rows = []
+        for point in points:
+            y_matrix_rows.append([math.log((self.max - point[-1]) / (point[-1] - self.min))])
+        y_matrix = Matrix(y_matrix_rows)
 
         coefficient_rows = []
         for point in points:
@@ -24,7 +27,7 @@ class EvenBetterSandwich:
             self.num_interaction = len(interaction)
             for term in interaction:
                 self.coefficients[term] = None
-                for i in range(0, len(rows)):
+                for i in range(0, len(y_matrix_rows)):
                     term_to_append = 1
                     for item in term:
                         term_to_append *= points[i][item - 1]
@@ -66,4 +69,4 @@ class EvenBetterSandwich:
                     interaction_term *= inputs[term - 1]
                 answer += interaction_term
         answer += self.coefficients[0]
-        return self.min + (self.max-self.min)/((e ** answer) + 1)
+        return self.min + (self.max-self.min)/((math.e ** answer) + 1)
