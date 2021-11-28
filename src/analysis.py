@@ -1,5 +1,6 @@
 from matrix import Matrix
 
+
 class LinearRegression:
     def fit(self, points):
 
@@ -12,7 +13,7 @@ class LinearRegression:
         for i in range(0, len(self.data)):
             for j in range(0, length - 1):
                 coefficient_rows[i].append(self.data[i][j])
-        
+
         coefficient_matrix = Matrix(coefficient_rows)
 
         coefficient_transpose = coefficient_matrix.transpose()
@@ -28,13 +29,14 @@ class LinearRegression:
     def predict(self, x, y):
         return self.coefficients[1] * x + self.coefficients[2]*y + self.coefficients[0]
 
+
 class BetterSandwich:
     def fit(self, points, interaction=None):
 
         self.data = points
         self.coefficients = {}
         self.num_interaction = 0
-        
+
         length = len(self.data[0])
         rows = [[point[-1]] for point in points]
         y_matrix = Matrix(rows)
@@ -61,40 +63,39 @@ class BetterSandwich:
         transpose_times_coefficients = coefficient_transpose.matrix_multiplication(coefficient_matrix)
 
         inverse_matrix = transpose_times_coefficients.inverse()
-        a_b_matrix = inverse_matrix.matrix_multiplication(transpose_times_y) 
+        a_b_matrix = inverse_matrix.matrix_multiplication(transpose_times_y)
 
         coefficient_first = a_b_matrix.rows[-1]
         for i in range(0, len(a_b_matrix.rows) - 1):
             coefficient_first.append(a_b_matrix.rows[i][0])
 
-        print(coefficient_first)
         for i in range(0, len(points[0])):
-            self.coefficients[i] = coefficient_first.pop(0)[0] 
+            self.coefficients[i] = coefficient_first.pop(0)
 
         for key in self.coefficients:
             if self.coefficients[key] is None:
-                self.coefficients[key] = coefficient_first.pop(0)[0]
+                self.coefficients[key] = coefficient_first.pop(0)
 
     def predict(self, inputs):
         if self.coefficients is None:
-            return "no data"
-        if len(inputs) != len(self.coefficients) - self.num_interaction + 1:
+            return "no data to fit"
+        if len(inputs) != len(self.coefficients) - (self.num_interaction + 1):
             return "broken"
-
         answer = 0
-        for element in self.coefficients:
-            if element == 0:
+        for beta in self.coefficients:
+            if beta == 0:
                 continue
-            elif isinstance(element, int):
-                answer += self.coefficients[element] * inputs[element - 1]
+            elif isinstance(beta, int):
+                answer += self.coefficients[beta] * inputs[beta - 1]
             else:
-                term = self.coefficients[element]
-                for part in term:
-                    term *= inputs[element - 1]
-                answer += term
+                interaction_term = self.coefficients[beta]
+                for term in beta:
+                    interaction_term *= inputs[term - 1]
+                answer += interaction_term
         answer += self.coefficients[0]
         return answer
 
 a = BetterSandwich()
 a.fit([[0, 0, 1], [1, 0, 2], [2, 0, 4], [4, 0, 8], [6, 0, 9], [0, 2, 2], [0, 4, 5], [0, 6, 7], [0, 8, 6], [2, 2, 1], [3, 4, 1]], [(1, 2)])
-a.predict([5, 5])
+print(a.coefficients)
+print(a.predict([5, 5]))
