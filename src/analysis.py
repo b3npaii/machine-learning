@@ -1,0 +1,100 @@
+from matrix import Matrix
+
+class LinearRegression:
+    def fit(self, points):
+
+        self.data = points
+        length = len(self.data[0])
+        rows = [[point[-1]] for point in points]
+        y_matrix = Matrix(rows)
+
+        coefficient_rows = [[1] for point in points]
+        for i in range(0, len(self.data)):
+            for j in range(0, length - 1):
+                coefficient_rows[i].append(self.data[i][j])
+        
+        coefficient_matrix = Matrix(coefficient_rows)
+
+        coefficient_transpose = coefficient_matrix.transpose()
+        transpose_times_y = coefficient_transpose.matrix_multiplication(y_matrix)
+        transpose_times_coefficients = coefficient_transpose.matrix_multiplication(coefficient_matrix)
+
+        inverse_matrix = transpose_times_coefficients.inverse()
+        a_b_matrix = inverse_matrix.matrix_multiplication(transpose_times_y)
+        self.coefficients = []
+        for i in range(a_b_matrix.num_rows):
+            self.coefficients.append(a_b_matrix.rows[i][0])
+
+    def predict(self, x, y):
+        return self.coefficients[1] * x + self.coefficients[2]*y + self.coefficients[0]
+
+class BetterSandwich:
+    def fit(self, points, interaction=None):
+
+        self.data = points
+        self.coefficients = {}
+        self.num_interaction = 0
+        
+        length = len(self.data[0])
+        rows = [[point[-1]] for point in points]
+        y_matrix = Matrix(rows)
+
+        coefficient_rows = []
+        for point in points:
+            row = point[:-1]
+            row.append(1)
+            coefficient_rows.append(row)
+
+        if interaction is not None:
+            self.num_interaction = len(interaction)
+            for term in interaction:
+                self.coefficients[term] = None
+                for i in range(0, len(rows)):
+                    term_to_append = 1
+                    for item in term:
+                        term_to_append *= points[i][item - 1]
+                    coefficient_rows[i].insert(-1, term_to_append)
+
+        coefficient_matrix = Matrix(coefficient_rows)
+        coefficient_transpose = coefficient_matrix.transpose()
+        transpose_times_y = coefficient_transpose.matrix_multiplication(y_matrix)
+        transpose_times_coefficients = coefficient_transpose.matrix_multiplication(coefficient_matrix)
+
+        inverse_matrix = transpose_times_coefficients.inverse()
+        a_b_matrix = inverse_matrix.matrix_multiplication(transpose_times_y) 
+
+        coefficient_first = a_b_matrix.rows[-1]
+        for i in range(0, len(a_b_matrix.rows) - 1):
+            coefficient_first.append(a_b_matrix.rows[i][0])
+
+        print(coefficient_first)
+        for i in range(0, len(points[0])):
+            self.coefficients[i] = coefficient_first.pop(0)[0] 
+
+        for key in self.coefficients:
+            if self.coefficients[key] is None:
+                self.coefficients[key] = coefficient_first.pop(0)[0]
+
+    def predict(self, inputs):
+        if self.coefficients is None:
+            return "no data"
+        if len(inputs) != len(self.coefficients) - self.num_interaction + 1:
+            return "broken"
+
+        answer = 0
+        for element in self.coefficients:
+            if element == 0:
+                continue
+            elif isinstance(element, int):
+                answer += self.coefficients[element] * inputs[element - 1]
+            else:
+                term = self.coefficients[element]
+                for part in term:
+                    term *= inputs[element - 1]
+                answer += term
+        answer += self.coefficients[0]
+        return answer
+
+a = BetterSandwich()
+a.fit([[0, 0, 1], [1, 0, 2], [2, 0, 4], [4, 0, 8], [6, 0, 9], [0, 2, 2], [0, 4, 5], [0, 6, 7], [0, 8, 6], [2, 2, 1], [3, 4, 1]], [(1, 2)])
+a.predict([5, 5])

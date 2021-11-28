@@ -281,8 +281,10 @@ class Matrix:
         copied_matrix = self.copy()
         copied_matrix = copied_matrix.augment_matrix(Identity)
         row_reduced = copied_matrix.rref()
+        """
         if row_reduced.un_augment_matrix(2).rows != Identity.rows:
             return False
+        """
         answer = row_reduced.un_augment_matrix(1)
         return answer
 
