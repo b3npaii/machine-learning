@@ -69,4 +69,4 @@ class EvenBetterSandwich:
                     interaction_term *= inputs[term - 1]
                 answer += interaction_term
         answer += self.coefficients[0]
-        return self.min + (self.max-self.min)/((math.e ** answer) + 1)
+        return self.min + (self.max - self.min)/((math.e ** answer) + 1)
