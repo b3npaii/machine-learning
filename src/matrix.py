@@ -297,7 +297,8 @@ class Matrix:
         copied_matrix = self.copy()
         for j in range(0, copied_matrix.num_rows):
             for i in range(0, copied_matrix.num_rows):
-                if copied_matrix.check_if_reduced_row(i) == True:                        continue
+                if copied_matrix.check_if_reduced_row(i) == True:
+                    continue
                 if copied_matrix.check_if_zero_row(i) == True:
                     copied_matrix = copied_matrix.row_swap(i, self.num_cols)
                     det *= -1
