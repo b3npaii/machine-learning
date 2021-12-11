@@ -21,13 +21,12 @@ class DataFrame:
         return DataFrame(new_columns, columns)
 
     def select_rows(self, rows):
-        new_rows = []
-        for column in self.column_order:
-            row_to_append = []
-            for row in rows:
-                row_to_append.append(self.data_dict[column][row])
-            new_rows.append(row_to_append)
-        return DataFrame.from_array(new_rows, self.column_order)
+        selected_rows = []
+        arr = self.to_array()
+        for row in rows:
+            selected_rows.append(arr[row])
+        return DataFrame.from_array(arr, self.column_order)
+
 
     def to_json(self):
         dicts = [{} for i in range(0, len(self.data_dict) + 1)]
@@ -46,15 +45,23 @@ class DataFrame:
             elif ascending == False:
                 sort = sort_descend(unsorted)
         elif isinstance(unsorted[0], str):
-            if ascending == True:
-                
+            print("not yet")
+        arrs = [[] for i in range(0, len(self.data_dict[column]) + 1)]
+        if isinstance(sort[0], int):
+            for i in range(0, len(self.data_dict[column])):
+                index = self.data_dict[column].index(sort[i])
+                for column in self.column_order:
+                    arrs[i].append(self.data_dict[column][index])
+        return DataFrame.from_array(arrs, self.column_order)
+        
 
     @classmethod
     def from_array(cls, array, column_order):
         dict = {}
-        for column in column_order:
+        for i in range(0, len(column_order)):
+            column = column_order[i]
             dict[column] = []
-            for i in range(0, len(array)):
+            for i in range(0, len(array[0])):
                 dict[column].append(array[i][column_order.index(column)])
         return cls(dict, column_order=column_order)
 
@@ -64,7 +71,6 @@ data_dict = {
     'John': [2, 1, 0, 2], 
     'Sarah': [3, 1, 4, 0]
 }
-
 """
 a = DataFrame(data_dict, column_order=['John', 'Sarah', 'Pete'])
 a.to_array()
@@ -80,4 +86,4 @@ data = [['Kevin', 'Fray', 5],
 ]
 d = DataFrame.from_array(data, column_order=["firstname", "lastname", "age"])
 #print(d.to_json())
-print(d.order_by("age", ascending=True))
+e = d.order_by("age", ascending=False)
