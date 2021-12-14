@@ -1,14 +1,17 @@
+import math
 import sys
-sys.path.insert(1, sys.path[0].replace('tests', 'src'))
 
+sys.path.insert(1, sys.path[0].replace('tests', 'src'))
 from gradient_descent import minimize
 
-def fprime(x):
+
+def fprime_test_1(x):
     return 2 * x
 
-def fprime2(x):
-    return (2 * x) - 2
 
-assert minimize(fprime, 4, 0.001, 1000000) < 0.01
-print(minimize(fprime2, 3, 0.001, 10000))
-assert minimize(fprime2, 2, 0.001, 10000) < -0.9
+def fprime_test_2(x):
+    return 2 * x + 9 * (x ** 2) + 4 * (x ** 3) + 3
+
+
+assert math.isclose(minimize(fprime_test_1, -12, 0.91, 100000), 0, abs_tol=1e-09)
+assert math.isclose(minimize(fprime_test_2, 10, 0.001, 100000), -2.17851, rel_tol=1e-5)
