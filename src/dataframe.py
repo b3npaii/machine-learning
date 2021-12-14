@@ -38,13 +38,16 @@ class DataFrame:
         sort = []
         arrs = [[] for i in range(0, len(self.data_dict[column]))]
         copy = self.data_dict[column]
+
         for i in range(0, len(self.data_dict[column])):
             unsorted.append(self.data_dict[column][i])
+
         if isinstance(unsorted[0], int):
             if ascending == True:
                 sort = sort_ascend(unsorted)
             elif ascending == False:
                 sort = sort_descend(unsorted)
+
         elif isinstance(unsorted[0], str):
             if ascending == True:
                 for i in range(0, len(unsorted)):
@@ -52,16 +55,19 @@ class DataFrame:
                         if unsorted[i][0] < unsorted[j][0]:
                             unsorted[i], unsorted[j] = unsorted[j], unsorted[i]
                 sort = unsorted
+
             if ascending == False:
                 for i in range(0, len(unsorted)):
                     for j in range(0, len(unsorted)):
                         if unsorted[i][0] > unsorted[j][0]:
                             unsorted[i], unsorted[j] = unsorted[j], unsorted[i]
                 sort = unsorted
+
         for i in range(0, len(self.data_dict[column])):
             index = copy.index(sort[i])
             for column in self.column_order:
                 arrs[i].append(self.data_dict[column][index])
+
         return DataFrame.from_array(arrs, self.column_order)
         
 
