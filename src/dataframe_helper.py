@@ -29,11 +29,3 @@ def sort_descend(numbers):
             answer_arr.append(value)
             numbers.remove(value)
     return answer_arr
-
-def convert_to_number(input_string):
-    number = 0
-    alph = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-    if input_string[0] in alph:
-        number = alph.index(input_string[0])
-    return number
-
