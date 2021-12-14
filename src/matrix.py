@@ -316,3 +316,56 @@ class Matrix:
                 copied_matrix = copied_matrix.row_swap(i, i + 1)
                 det *= -1
         return det
+    
+    def exponent(self, power):
+        copied_matrix = self.copy()
+        for i in range(0, power - 1):
+            matrix = self.matrix_multiplication(copied_matrix)
+            copied_matrix = matrix
+        return copied_matrix
+    
+    def __add__(self, other_matrix):
+        answer = []
+        for i in range(0, self.num_rows):
+            answer.append([])
+            for j in range(0, self.num_cols):
+                answer[i].append(self.rows[i][j] + other_matrix.rows[i][j])
+        return Matrix(answer)
+
+    def __sub__(self, other_matrix):
+        new_rows = other_matrix.rows
+        result = []
+        for row in self.rows:
+            result.append([])
+        for i in range(0, self.num_rows):
+            for j in range(0, self.num_cols):
+                result[i].append(self.rows[i][j] - new_rows[i][j])
+        return Matrix(result)
+
+    def __mul__(self, scalar):
+        rescaled_rows = []
+        for row in self.rows:
+            rescaled_rows.append([])
+        for i in range(0, self.num_cols):
+            for j in range(0, self.num_rows):
+                rescaled_rows[i].append(self.rows[j][i] * scalar)
+        return Matrix(rescaled_rows)
+
+    def __matmul__(self, other_matrix):
+        result = [[sum(a*b for a,b in zip(row,col)) for col in zip(*other_matrix.rows)] for row in self.rows]
+        return Matrix(result)
+    
+    def __pow__(self, power):
+        copied_matrix = self.copy()
+        for i in range(0, power - 1):
+            matrix = self.matrix_multiplication(copied_matrix)
+            copied_matrix = matrix
+        return copied_matrix
+    
+    def __eq__(self, other_matrix):
+        for i in range(0, self.num_rows):
+            for j in range(0, self.num_cols):
+                if self.rows[i][j] != other_matrix.rows[i][j]:
+                    return False
+        return True
+
