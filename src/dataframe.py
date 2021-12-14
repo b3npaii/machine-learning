@@ -7,11 +7,11 @@ class DataFrame:
         self.column_order = column_order
     
     def to_array(self):
-        array = [[] for row in self.data_dict[self.column_order[0]]]
-        for column in self.column_order:
-            for i in range(0, len(self.data_dict[self.column_order[0]])):
-                array[i].append(self.data_dict[column][i])
-        return array
+        array = [[] for i in range(len(self.data_dict[self.column_order[0]]))]
+        for values in self.column_order: 
+            for i in range(len(array)):
+                array[i].append(self.data_dict[values][i])
+        return array 
 
     def select_columns(self, columns):
         new_columns = {}
@@ -19,13 +19,12 @@ class DataFrame:
             new_columns[column] = self.data_dict[column]
         return DataFrame(new_columns, columns)
 
-    def select_rows(self, rows):
+    def select_rows(self, rows): 
         selected_rows = []
-        arr = self.to_array()
-        for row in rows:
-            selected_rows.append(arr[row])
-        return DataFrame.from_array(arr, self.column_order)
-
+        array = self.to_array()
+        for row in rows: 
+            selected_rows.append(array[row])
+        return DataFrame.from_array(selected_rows, self.column_order)
 
     def to_json(self):
         dicts = [{} for i in range(0, len(self.data_dict) + 1)]
@@ -37,7 +36,7 @@ class DataFrame:
     def order_by(self, column, ascending=True):
         unsorted = []
         sort = []
-        arrs = [[] for i in range(0, len(self.data_dict[column]) + 1)]
+        arrs = [[] for i in range(0, len(self.data_dict[column]))]
         copy = self.data_dict[column]
         for i in range(0, len(self.data_dict[column])):
             unsorted.append(self.data_dict[column][i])
@@ -67,14 +66,13 @@ class DataFrame:
         
 
     @classmethod
-    def from_array(cls, array, column_order):
+    def from_array(cls, arr, column_order):
         dict = {}
-        for i in range(0, len(column_order)):
-            column = column_order[i]
-            dict[column] = []
-            for i in range(0, len(array[0]) + 1):
-                dict[column].append(array[i][column_order.index(column)])
-        return cls(dict, column_order=column_order)
+        for values in column_order:
+            dict[values] = []
+            for j in range(len(arr)):
+                dict[values].append(arr[j][column_order.index(values)])
+        return cls(dict, column_order = column_order)
 
     @classmethod
     def from_json(cls, json, column_order):
