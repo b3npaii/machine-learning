@@ -35,11 +35,6 @@ class KNearestNeighborsClassifier:
         distances  = self.compute_distance(observation)
         copy = self.compute_distance(observation)
 
-        for i in range(0, len(distances)):
-            rounded = round(distances[i], 5)
-            distances[i] = rounded
-            copy[i] = rounded
-
         closest = []
         indexes = []
         for i in range(0, self.k):
