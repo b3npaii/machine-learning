@@ -20,9 +20,11 @@ class KNearestNeighborsClassifier:
         distances = []
         for i in range(0, len(self.data)):
             distances.append(0)
+
         for row in self.data:
             for i in range(0, len(self.data[0])):
                 distances[self.data.index(row)] += (observation[i] - row[i]) ** 2
+
         sqrts = []
         for i in range(0, len(distances)):
             sqrts.append(math.sqrt(distances[i]))
