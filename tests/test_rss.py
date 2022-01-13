@@ -32,20 +32,20 @@ assert round(line_two[1], 2) == 1.7
 
 
 def a_one_grad_pb(a,b,c): 
-    return ((196 * a) + (72 * b) + (38 * c) -26)
+    return ((196 * a) + (72 * b) + (28 * c) -26)
 
 def b_one_grad_pb(a,b,c): 
-    return ((72 * a) + (28 * b) + (12 * c) -10)
+    return ((72 * a) + (28 * b) + (12 * c) - 10)
 
 def c_one_grad_pb(a,b,c): 
     return ((28 * a) + (12 * b) + (8 * c) - 8)
 
-parobola_1 = RSS_three(1,0,0,a_one_grad_pb, b_one_grad_pb, c_one_grad_pb, learning_rate=0.00001, num_iterations = 1000000)
+parobola_1 = RSS_three(1,0,0,a_one_grad_pb, b_one_grad_pb, c_one_grad_pb, learning_rate=0.01, num_iterations = 1000000)
+print(parobola_1)
 
-assert round(parobola_1[0], 2) == -0.5
-assert round(parobola_1[1], 2) == 1.3
-assert round(parobola_1[2], 2) == 0.8
-
+assert round(parobola_1[0], 2) == 0.5
+assert round(parobola_1[1], 2) == -1.7
+assert round(parobola_1[2], 2) == 1.8
 
 #PARABOLA
 def a_two_grad_pb(a,b,c): 

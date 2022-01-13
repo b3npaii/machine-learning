@@ -1,12 +1,12 @@
 from gradient_descent import multivariable_descent
-"""
+import math
+
 def rss(data, coefficients):
     distance = 0
-    for point in data:
-        for i in range(0, len(data[0])):
-            distance += (coefficients[i] - point[i]) ** 2
+    for i in range(0, len(data)):
+        distance += ((coefficients[i] ** 2) - (data[i] ** 2))
     return distance
-    
+"""
 def descend(data, points, functions, learning_rate=0.01):
     distance = rss(data, points)
     i = 0
@@ -42,8 +42,44 @@ def RSS(a, b, a_function, b_function, learning_rate = 0.01, num_iterations = 100
     return(a, b)
 
 def RSS_three(a, b, c, a_function, b_function, c_function, learning_rate = 0.01, num_iterations = 1000):
+    points = [a, b, c]
     for i in range(0, num_iterations):
         a = a - (learning_rate * a_function(a, b, c))
         b = b - (learning_rate * b_function(a, b, c))
         c = c - (learning_rate * c_function(a, b, c))
+        if i % 5000 == 0:
+            print(a, b, c)
+            print(rss(points, [a, b, c]))
     return(a, b, c)
+
+def bonus(a, b, c, a_function, b_function, c_function, learning_rate = 0.01, num_iterations = 1000):
+    points = [a, b, c]
+    for i in range(0, num_iterations):
+        a = a - (learning_rate * a_function(a, b, c))
+        b = b - (learning_rate * b_function(a, b, c))
+        c = c - (learning_rate * c_function(a, b, c))
+        array = [a, b, c]
+        accuracy = 0
+        for j in range(0, len(array)):
+            array[j] = round(array[j], 4)
+        for j in range(0, len(points)):
+            if round(points[j], 4) == array[j]:
+                accuracy += 1
+        if accuracy == len(points):
+            return i
+        else:
+            accuracy = 0
+        points = array
+    print(a, b, c)
+
+def a_one_grad_pb(a,b,c): 
+    return ((196 * a) + (72 * b) + (28 * c) -26)
+
+def b_one_grad_pb(a,b,c): 
+    return ((72 * a) + (28 * b) + (12 * c) - 10)
+
+def c_one_grad_pb(a,b,c): 
+    return ((28 * a) + (12 * b) + (8 * c) - 8)
+
+parobola_3 = bonus(1,0,0,a_one_grad_pb, b_one_grad_pb, c_one_grad_pb, learning_rate=0.013303, num_iterations = 1000000)
+print(parobola_3)
