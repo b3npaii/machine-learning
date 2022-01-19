@@ -47,9 +47,6 @@ def RSS_three(a, b, c, a_function, b_function, c_function, learning_rate = 0.01,
         a = a - (learning_rate * a_function(a, b, c))
         b = b - (learning_rate * b_function(a, b, c))
         c = c - (learning_rate * c_function(a, b, c))
-        if i % 5000 == 0:
-            print(a, b, c)
-            print(rss(points, [a, b, c]))
     return(a, b, c)
 
 def bonus(a, b, c, a_function, b_function, c_function, learning_rate = 0.01, num_iterations = 1000):
@@ -83,3 +80,20 @@ def c_one_grad_pb(a,b,c):
 
 parobola_3 = bonus(1,0,0,a_one_grad_pb, b_one_grad_pb, c_one_grad_pb, learning_rate=0.013303, num_iterations = 1000000)
 print(parobola_3)
+
+def general_rss(coefficients, functions, step = 0.001,iteration = 10):
+    copyfficients = list(coefficients)
+    coefficients_the_second = coefficients
+    for i in range(iteration):
+        data_points = coefficients_the_second
+        for item in functions:
+            coefficients_the_second[functions.index(item)] = coefficients_the_second[functions.index(item)] - step * item(coefficients)
+    return coefficients
+
+def RSS_rounded(a, b, a_function, b_function, learning_rate = 0.01, num_iterations = 1000):
+    for i in range(0, num_iterations):
+        a = a - (learning_rate * a_function(a, b))
+        b = b - (learning_rate * b_function(a, b))
+        a = round(a, 15)
+        b = round(b, 15)
+    return(a, b)

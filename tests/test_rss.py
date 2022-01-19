@@ -2,6 +2,9 @@ import sys
 sys.path.insert(1, sys.path[0].replace('tests', 'src'))
 from line_descent import RSS
 from line_descent import RSS_three
+from line_descent import general_rss
+from line_descent import RSS_rounded
+import math
 
 # LINEAR 
 
@@ -62,3 +65,16 @@ parobola_2 = RSS_three(1,0,0,a_two_grad_pb, b_two_grad_pb, c_two_grad_pb, learni
 assert round(parobola_2[0], 2) == 0.18
 assert round(parobola_2[1], 2) == -0.27
 assert round(parobola_2[2], 2) == 1.34
+
+def a_logistic(a, b):
+    return 2 * (0.5 - 1/(1 + math.e ** (a + b))) * (-1 * (math.e ** (a + b) / ((1 + math.e ** a + b) ** 2))) + 2 * (1 - (1/(1 + math.e ** (4 * a + b)))) * (-1 * (4 * math.e ** (4 * a + b))/(1 + math.e ** (4 * a + b)) ** 2)
+def b_logistic1(a, b):
+    return 2 * (-1 * ((math.e ** b) / ((1 + (math.e ** (a + b))) ** 2))) + 2 * (0.5 - (1/(1 + math.e ** (a + b)))) * (-1 * (math.e ** (a + b) / ((1 + math.e ** a + b) ** 2))) 
+def b_logistic2(a, b):
+    return 2 * (1 - (1/(1 + math.e ** (4 * a + b)))) * (-1 * (math.e ** (4 * a + b)) / (1 + math.e ** (4 * a + b)) ** 2)
+def b_logistic(a, b):
+    return b_logistic1(a, b) + b_logistic2(a, b)
+print(a_logistic(1, 0))
+print(b_logistic(1, 0))
+
+logistic_1 = RSS_rounded(-1, 0, a_logistic, b_logistic, learning_rate = 0.01, num_iterations = 10000)
