@@ -12,7 +12,7 @@ class euler_method:
         y = points[1]
         for i in range(0, num_steps):
             x += step_size
-            y += self.derivative(points)
+            y += self.derivative(points) * step_size
             points = [x, y]
             print(points)
         

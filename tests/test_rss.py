@@ -67,14 +67,10 @@ assert round(parobola_2[1], 2) == -0.27
 assert round(parobola_2[2], 2) == 1.34
 
 def a_logistic(a, b):
-    return 2 * (0.5 - 1/(1 + math.e ** (a + b))) * (-1 * (math.e ** (a + b) / ((1 + math.e ** a + b) ** 2))) + 2 * (1 - (1/(1 + math.e ** (4 * a + b)))) * (-1 * (4 * math.e ** (4 * a + b))/(1 + math.e ** (4 * a + b)) ** 2)
-def b_logistic1(a, b):
-    return 2 * (-1 * ((math.e ** b) / ((1 + (math.e ** (a + b))) ** 2))) + 2 * (0.5 - (1/(1 + math.e ** (a + b)))) * (-1 * (math.e ** (a + b) / ((1 + math.e ** a + b) ** 2))) 
-def b_logistic2(a, b):
-    return 2 * (1 - (1/(1 + math.e ** (4 * a + b)))) * (-1 * (math.e ** (4 * a + b)) / (1 + math.e ** (4 * a + b)) ** 2)
+    return ((math.e ** (a + b)) * (math.e ** (a + b) - 1)) / ((math.e ** (a + b) + 1) ** 2) + 8 * ((math.e ** (8 * a + 2 * b)) / (math.e ** (4* a +b) + 1) ** 3)
 def b_logistic(a, b):
-    return b_logistic1(a, b) + b_logistic2(a, b)
-print(a_logistic(1, 0))
-print(b_logistic(1, 0))
+    return -2 * (math.e ** b) / ((math.e ** b) + 1) ** 3 + ((math.e ** (a + b)) * (math.e ** (a + b) - 1)) / ((math.e ** (a + b) + 1) ** 3) + 2 * ((math.e ** (8 * a + 2 * b)) / (math.e ** (4* a +b) + 1) ** 3)
 
-logistic_1 = RSS_rounded(-1, 0, a_logistic, b_logistic, learning_rate = 0.01, num_iterations = 10000)
+
+logistic_1 = RSS_rounded([[0, 0], [1, 0.5], [4, 1]], -1, 0, a_logistic, b_logistic, learning_rate = 0.01, num_iterations = 10000)
+print(logistic_1)

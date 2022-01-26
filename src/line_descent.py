@@ -6,6 +6,13 @@ def rss(data, coefficients):
     for i in range(0, len(data)):
         distance += ((coefficients[i] ** 2) - (data[i] ** 2))
     return distance
+
+def better_rss(data, coefficients):
+    distance = 0
+    for i in range(0, len(data)):
+        for j in range(0, len(data[i])):
+            distance += ((coefficients[j]) - (data[i][j])) ** 2
+    return distance
 """
 def descend(data, points, functions, learning_rate=0.01):
     distance = rss(data, points)
@@ -49,23 +56,19 @@ def RSS_three(a, b, c, a_function, b_function, c_function, learning_rate = 0.01,
         c = c - (learning_rate * c_function(a, b, c))
     return(a, b, c)
 
+def eq(a):
+    return (a[2] -2) ** 2 + (a[0] + a[1] + a[2]) ** 2 + (4*a[0] + 2 * a[1] - 1 + a[2]) ** 2 + (9*a[0] + 3 * a[1] - 1 + a[2]) ** 2
+
 def bonus(a, b, c, a_function, b_function, c_function, learning_rate = 0.01, num_iterations = 1000):
     points = [a, b, c]
     for i in range(0, num_iterations):
-        a = a - (learning_rate * a_function(a, b, c))
-        b = b - (learning_rate * b_function(a, b, c))
-        c = c - (learning_rate * c_function(a, b, c))
         array = [a, b, c]
-        accuracy = 0
-        for j in range(0, len(array)):
-            array[j] = round(array[j], 4)
-        for j in range(0, len(points)):
-            if round(points[j], 4) == array[j]:
-                accuracy += 1
-        if accuracy == len(points):
+        a = array[0] - (learning_rate * a_function(a, b, c))
+        b = array[1] - (learning_rate * b_function(a, b, c))
+        c = array[2] - (learning_rate * c_function(a, b, c))
+        if eq(array) < 0.8001:
+            print(eq(array))
             return i
-        else:
-            accuracy = 0
         points = array
     print(a, b, c)
 
@@ -78,7 +81,7 @@ def b_one_grad_pb(a,b,c):
 def c_one_grad_pb(a,b,c): 
     return ((28 * a) + (12 * b) + (8 * c) - 8)
 
-parobola_3 = bonus(1,0,0,a_one_grad_pb, b_one_grad_pb, c_one_grad_pb, learning_rate=0.013303, num_iterations = 1000000)
+parobola_3 = bonus(1,0,0,a_one_grad_pb, b_one_grad_pb, c_one_grad_pb, learning_rate=0.0134, num_iterations = 1000000)
 print(parobola_3)
 
 def general_rss(coefficients, functions, step = 0.001,iteration = 10):
@@ -90,10 +93,15 @@ def general_rss(coefficients, functions, step = 0.001,iteration = 10):
             coefficients_the_second[functions.index(item)] = coefficients_the_second[functions.index(item)] - step * item(coefficients)
     return coefficients
 
-def RSS_rounded(a, b, a_function, b_function, learning_rate = 0.01, num_iterations = 1000):
+def RSS_rounded(points, a, b, a_function, b_function, learning_rate = 0.01, num_iterations = 1000):
     for i in range(0, num_iterations):
         a = a - (learning_rate * a_function(a, b))
         b = b - (learning_rate * b_function(a, b))
-        a = round(a, 15)
-        b = round(b, 15)
+        if i % 1000 == 0:
+            print(eqlog([a, b]))
     return(a, b)
+
+def eqlog(l):
+    a = l[0]
+    b = l[1]
+    return (1/(1 + math.e **(a * 0 + b)) - 0) **2 + (1/(1 + math.e **(a *  1+ b)) -0.5 ) **2 + (1/(1 + math.e **(a * 4 + b)) - 1) **2
