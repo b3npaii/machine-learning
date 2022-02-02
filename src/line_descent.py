@@ -63,9 +63,9 @@ def bonus(a, b, c, a_function, b_function, c_function, learning_rate = 0.01, num
     points = [a, b, c]
     for i in range(0, num_iterations):
         array = [a, b, c]
-        a = array[0] - (learning_rate * a_function(a, b, c))
-        b = array[1] - (learning_rate * b_function(a, b, c))
-        c = array[2] - (learning_rate * c_function(a, b, c))
+        a = array[0] - (learning_rate * a_function(array[0], array[1], array[2]))
+        b = array[1] - (learning_rate * b_function(array[0], array[1], array[2]))
+        c = array[2] - (learning_rate * c_function(array[0], array[1], array[2]))
         if eq(array) < 0.8001:
             print(eq(array))
             return i
@@ -81,7 +81,7 @@ def b_one_grad_pb(a,b,c):
 def c_one_grad_pb(a,b,c): 
     return ((28 * a) + (12 * b) + (8 * c) - 8)
 
-parobola_3 = bonus(1,0,0,a_one_grad_pb, b_one_grad_pb, c_one_grad_pb, learning_rate=0.0134, num_iterations = 1000000)
+parobola_3 = bonus(1,0,0,a_one_grad_pb, b_one_grad_pb, c_one_grad_pb, learning_rate=0.008766, num_iterations = 1000000)
 print(parobola_3)
 
 def general_rss(coefficients, functions, step = 0.001,iteration = 10):
