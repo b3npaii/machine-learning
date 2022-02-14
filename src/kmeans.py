@@ -16,7 +16,10 @@ class Kmeans:
             for i in range(0, len(self.data[index])):
                 averages[i] += self.data[index][i]
         for i in range(0, len(averages)):
-            averages[i] = averages[i] / len(values[cluster_index])
+            if len(values[cluster_index]) != 0:
+                averages[i] = averages[i] / len(values[cluster_index])
+            else:
+                averages[i] = averages[i]
         return averages
 
     def euclidian(self, midpoint, index, cluster_index):
