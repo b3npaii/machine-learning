@@ -17,7 +17,6 @@ class PolynomialRegression:
         coefficient_transpose = coefficient_matrix.transpose()
         transpose_times_y = coefficient_transpose.matrix_multiplication(y_matrix)
         transpose_times_coefficients = coefficient_transpose.matrix_multiplication(coefficient_matrix)
-        transpose_times_coefficients.print()
 
         inverse_matrix = transpose_times_coefficients.inverse()
         a_b_matrix = inverse_matrix.matrix_multiplication(transpose_times_y)
@@ -25,17 +24,11 @@ class PolynomialRegression:
         for i in range(a_b_matrix.num_rows):
             self.coefficients.append(a_b_matrix.rows[i][0])
 
-    def predict(self, inputs):
-        numbers = self.coefficients
-        answer = numbers[0]
-        for i in range(1, len(numbers)):
-            answer += numbers[i] * inputs[i - 1] ** i 
-        return answer
+        
 
-j = PolynomialRegression()
-j.fit([[1, 2], [3, 4], [5, 6]], 3)
-print(j.coefficients)
-j.predict([1, 1, 1])
-a = PolynomialRegression()
-a.fit([[1, 3], [2, 10], [3, 40], [4, 25], [5, 90], [6, 100], [7, 180], [8, 140], [9, 250], [10, 260]], 3)
-print(a.coefficients)
+    def predict(self, input):
+        answer = self.coefficients[0]
+        for i in range(1, len(self.coefficients)):
+            print(self.coefficients[1])
+            answer += self.coefficients[i] * (input ** i)
+        return answer
