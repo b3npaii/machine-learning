@@ -1,55 +1,56 @@
 import math
-from matrix import Matrix
 
 class Kmeans:
-    def __init__(self, cluster, data):
-        self.clusters = cluster
+    def __init__(self, clusters, data):
+        self.initial = clusters
         self.data = data
-        self.copy = self.clusters.copy()
     
-    def getmidpoints(self, cluster_index):
-        values = list(self.copy.values())
-        averages = []
-        for i in range(0, len(self.data[0])):
-            averages.append(0)
-        for index in values[cluster_index]:
-            for i in range(0, len(self.data[index])):
-                averages[i] += self.data[index][i]
-        for i in range(0, len(averages)):
-            if len(values[cluster_index]) != 0:
-                averages[i] = averages[i] / len(values[cluster_index])
-            else:
-                averages[i] = averages[i]
-        return averages
+    def getmidpoints(self):
+        length = len(self.data[0])
+        centers = {}
+        for cluster in self.clusters:
+            centers[cluster] = [0]
+            for i in range(length):
+                centers[cluster].append(0)
+        for index, cluster in self.clusters.items():
+            num_points = len(cluster)
+            for point in cluster:
+                for coord in range(0, length):
+                    centers[index][coord] += self.data[point][coord] / num_points
+        self.centers = centers
 
-    def euclidian(self, midpoint, index, cluster_index):
-        average = 0
-        for i in range(0, len(self.data[index])):
-            average += (self.data[index][i] - midpoint[cluster_index][i]) ** 2
-        average = math.sqrt(average)
-        return average
+    def euclidian(self, point_index, cluster):
+        center = self.centers[cluster]
+        point = self.data[point_index]
+        distance = 0
+        for i in range(0, len(point)):
+            distance += (point[i] - center[i]) ** 2
+        distance  = distance ** 0.5
+        return distance
     
+    def reassign_centers(self):
+        new_clusters = {}
+        for index in self.clusters.keys():
+            new_clusters[index] = []
+        for point in range(0, len(self.data)):
+            distances = {}
+            for cluster in self.clusters:
+                distances[cluster] = self.euclidian(point, cluster)
+            closest = min(distances, key=distances.get)
+            new_clusters[closest].append(point)
+        self.clusters = new_clusters
+
     def run(self):
-        cluster = {}
-        midpoints = []
-        cluster_nums = list(self.copy.keys())
-        indexes = list(self.copy.values())
-
-        for index in range(0, len(indexes)):
-            midpoints.append(self.getmidpoints(index))
-        
-        for i in range(0, len(midpoints)):
-            cluster[i + 1] = []
-        for i in range(0, len(self.data)):
-            euclid = []
-            for j in range(0, len(midpoints)):
-                euclid.append(self.euclidian(midpoints, i, j))
-            minimum = min(euclid)
-            cluster[euclid.index(minimum) + 1].append(i)
-        if cluster != self.copy:
-            self.copy = cluster
-            self.run()
-        else:
-            self.clusters = cluster
-            self.midpoint = midpoints
-
+        previous = {}
+        removed = []
+        self.clusters = self.initial
+        while previous != self.clusters:
+            previous = self.clusters
+            for cluster_index in list(self.clusters.keys()):
+                if len(self.clusters[cluster_index]) == 0:
+                    self.clusters.pop(cluster_index)
+                    removed.append(cluster_index)
+            self.getmidpoints()
+            self.reassign_centers()
+        for index in removed:
+            self.clusters[index] = []
