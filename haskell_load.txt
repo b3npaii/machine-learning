@@ -1,0 +1,8 @@
+do them line by line
+
+sudo apt update -y 
+sudo apt upgrade -y 
+sudo apt install haskell-platform -y
+
+sudo apt update -y && sudo apt upgrade -y && sudo apt install haskell-platform -y
+
